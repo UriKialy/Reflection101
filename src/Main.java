@@ -1,15 +1,66 @@
+import java.lang.reflect.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+    public static void main(String[] args) throws IllegalAccessException, InvocationTargetException {
+        Class C1 = int.class; // reflection can work on a primitive type
+        System.out.println(C1.getName());
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+
+        Dog dog1 = new Dog("Dubi", 7, "Dor");
+        System.out.println(dog1.getName());
+
+        Constructor[] Constructors = dog1.getClass().getConstructors();    //an array of the constructor
+        Constructor[] allConstructors = dog1.getClass().getDeclaredConstructors();//same but include the private
+        Method[] allMethods = dog1.getClass().getDeclaredMethods(); //an array of the methods that  include the private
+        ArrayList<Parameter> Parameters = new ArrayList<Parameter>(); //an array of the Parameters
+        ArrayList<Parameter> PrivateParameters = new ArrayList<Parameter>(); //same but include the private
+        Field[] fields = dog1.getClass().getFields(); //an array of the fields
+
+        System.out.println("the constructors are:");
+        for (Constructor constructor : Constructors) {    //print the ctor and the param's
+            System.out.println(constructor.getName());
+            Parameters.addAll(Arrays.asList(constructor.getParameters()));
         }
+
+        System.out.println("the  private constructors are:");
+        for (Constructor PrivateConstructor : allConstructors) {
+            if (!Arrays.asList(Constructors).contains(PrivateConstructor)) { // if this ctor is not in the regular array
+                System.out.println(PrivateConstructor.getName());  //print the ctor
+                PrivateParameters.addAll(Arrays.asList(PrivateConstructor.getParameters()));
+            }
+        }
+        System.out.println("the Parameters are:");
+        for (Parameter Parameter : Parameters) {
+            System.out.println(Parameter.getName() + " " + Parameter.getType().getName()); //print the param's and their type
+        }
+        System.out.println("the private Parameters are:");
+        for (Parameter PrivateParameter : PrivateParameters) {
+            if ((!Arrays.asList(Parameters).contains(PrivateParameter))) //if the param is private, print it
+                System.out.println(PrivateParameter.getName() + " " + PrivateParameter.getType().getName());
+        }
+        System.out.println("the methods are:");
+        for (int i = 0; i < allMethods.length; i++) {
+            System.out.println(allMethods[i].getName());
+            if (allMethods[i].getName().equals("sit")) {
+                allMethods[i].setAccessible(true);
+                allMethods[i].invoke(dog1);
+            }
+
+        }
+        System.out.println("the fields are:");
+        for (Field field : fields) {
+            System.out.println(field.getName());
+            if (field.getName().equals("owner")) {
+                field.setAccessible(true);
+                field.set(dog1, "mike");
+                System.out.println(dog1.owner);
+            }
+        }
+
     }
 }

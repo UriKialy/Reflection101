@@ -7,6 +7,11 @@ public class Dog {
         this.age=age;
         this.owner=owner;
     }
+    private  Dog (String name,int age){  //a default constructor without an owner will have default owner
+        this.name=name;
+        this.age=age;
+        this.name="uri";
+    }
 
     public void setName(java.lang.String name) {
         this.name = name;
@@ -28,7 +33,10 @@ public class Dog {
         return this.age;
     }
 
-    public String getOwner() {
+    private String getOwner() {
         return this.owner;
+    }
+    private  void sit(){
+        System.out.println(this.name +" is sitting");
     }
 }

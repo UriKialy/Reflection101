@@ -1,7 +1,7 @@
 import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -12,10 +12,11 @@ public class Main {
 
 
         Dog dog1 = new Dog("Dubi", 7, "Dor");
+        Class dog1Class =dog1.getClass();
         System.out.println(dog1.getName());
 
-        Constructor[] Constructors = dog1.getClass().getConstructors();    //an array of the constructor
-        Constructor[] allConstructors = dog1.getClass().getDeclaredConstructors();//same but include the private
+        Constructor[] Constructors = dog1Class.getConstructors();    //an array of the constructor
+        Constructor[] allConstructors = dog1Class.getDeclaredConstructors();//same but include the private
         Method[] allMethods = dog1.getClass().getDeclaredMethods(); //an array of the methods that  include the private
         ArrayList<Parameter> Parameters = new ArrayList<Parameter>(); //an array of the Parameters
         ArrayList<Parameter> PrivateParameters = new ArrayList<Parameter>(); //same but include the private
